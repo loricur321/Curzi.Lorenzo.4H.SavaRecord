@@ -11,11 +11,16 @@ namespace curzi.lorenzo._4H.SaveRecord
         {
             Console.WriteLine("Programma SaveRecord di Lorenzo Curzi 4H, 28/04/2021");
 
-            // Leggere un file CSV con i comuni e trasformarlo in una lista di Comune
+            // 1) Leggere un file CSV con i comuni e trasformarlo in una lista di Comune
             Comuni c = new Comuni("Comuni.csv");
-            // Scrivere la List<Comune> in un file binario
-            // Rileggere file binario in una List<Comune>
-    
+            Console.WriteLine($"Ho letto {c.Count} righe");
+            
+            // 2) Scrivere la List<Comune> in un file binario
+            c.Save();
+            
+            // 3) Rileggere file binario in una List<Comune>
+            c.Load();
+            Console.WriteLine($"Ho letto {c.Count} dal file binario");
             
         }
     }
