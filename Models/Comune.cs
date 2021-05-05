@@ -22,9 +22,6 @@ namespace curzi.lorenzo._4H.SaveRecord.Models
                 CodiceCatastale = 4 + 1
                 NomeComune = 22 + 1 
                 */
-                if(value.Length == 4)
-                    _nomeComune = value;
-
                 if(value.Length < 22)    
                     value = value.PadRight(22);
                 else if(value.Length > 22)    
@@ -63,6 +60,11 @@ namespace curzi.lorenzo._4H.SaveRecord.Models
             ID = id;
             NomeComune = colonne[1];
             CodiceCatastale = colonne[0];
+        }
+
+         public override string ToString()
+        {
+            return $"{ID}, {NomeComune}, {CodiceCatastale}";
         }
     }
 
@@ -127,9 +129,9 @@ namespace curzi.lorenzo._4H.SaveRecord.Models
                     writer.Write(comune.NomeComune);
 
                     //Riepimento del file binario con un record di 32 bit
-                    // writer.Seek((comune.ID) * 32, SeekOrigin.Begin);
+                    // fout.Seek((comune.ID) * 32, SeekOrigin.Begin);
                     // writer.Write(comune.ID);
-                    // writer.Write(comune.NomeComune.PadRight(22));
+                    // writer.Write(comune.NomeComune);
                     // writer.Write(comune.CodiceCatastale);
                 }
 
@@ -181,7 +183,7 @@ namespace curzi.lorenzo._4H.SaveRecord.Models
                     //Leggo il nome del comune
                     c.NomeComune = reader.ReadString();
 
-                    this.Add(c);
+                    this.Add(c); //aggiungo un record all'interno della lista
                 }
             }
             catch
