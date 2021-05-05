@@ -21,7 +21,11 @@ namespace curzi.lorenzo._4H.SaveRecord
             // 3) Rileggere file binario in una List<Comune>
             Console.WriteLine(c.Load());
             Console.WriteLine($"Ho letto {c.Count} dal file binario");
-            
+
+            Console.WriteLine("Inserire un numero: ");
+            string strNumero = Console.ReadLine();
+            Comune cercato = c.RicercaComune(Convert.ToInt32(strNumero));
+            Console.WriteLine(cercato.NomeComune);
         }
     }
 }

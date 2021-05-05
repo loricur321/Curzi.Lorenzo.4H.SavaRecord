@@ -9,9 +9,49 @@ namespace curzi.lorenzo._4H.SaveRecord.Models
     {
         public int ID { get;  set;}
 
-        public string NomeComune {get; set;}
+        private string _nomeComune;
+        public string NomeComune 
+        {
+            get => _nomeComune;
 
-        public string CodiceCatastale {get; set;}
+            set
+            {
+                /*
+                Lunghezza Record  = 32
+                Id = 4 byte
+                CodiceCatastale = 4 + 1
+                NomeComune = 22 + 1 
+                */
+                if(value.Length == 4)
+                    _nomeComune = value;
+
+                if(value.Length < 22)    
+                    value = value.PadRight(22);
+                else if(value.Length > 22)    
+                    value = value.Substring(0,22);
+                
+                _nomeComune = value;
+            }
+        }
+
+        private string _codicecatastale;
+        public string CodiceCatastale 
+        {
+            get => _codicecatastale;
+            
+            set
+            {
+                if(value.Length == 4)
+                    _codicecatastale = value;
+
+                if(value.Length < 4)    
+                    value = value.PadRight(4);
+                else if(value.Length > 4)    
+                    value = value.Substring(0,4);
+                
+                _codicecatastale = value;
+            }
+        }
 
         public Comune() {}
 
@@ -85,6 +125,12 @@ namespace curzi.lorenzo._4H.SaveRecord.Models
                     writer.Write(comune.ID);
                     writer.Write(comune.CodiceCatastale); 
                     writer.Write(comune.NomeComune);
+
+                    //Riepimento del file binario con un record di 32 bit
+                    // writer.Seek((comune.ID) * 32, SeekOrigin.Begin);
+                    // writer.Write(comune.ID);
+                    // writer.Write(comune.NomeComune.PadRight(22));
+                    // writer.Write(comune.CodiceCatastale);
                 }
 
                 writer.Flush();
@@ -144,6 +190,20 @@ namespace curzi.lorenzo._4H.SaveRecord.Models
             }
 
             return retVal;
+        }
+
+        public Comune RicercaComune (int numero)
+        {
+            FileStream streamReader = new FileStream("Comuni.bin", FileMode.Open);
+            BinaryReader reader = new BinaryReader(streamReader);
+
+            streamReader.Seek((numero - 1) * 32, SeekOrigin.Begin);
+            Comune c = new Comune();
+            c.ID = reader.ReadInt32();
+            c.CodiceCatastale = reader.ReadString();
+            c.NomeComune = reader.ReadString();
+
+            return c;
         }
     }
 }
