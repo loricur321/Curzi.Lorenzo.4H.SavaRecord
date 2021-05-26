@@ -1,4 +1,4 @@
-# Curzi.Lorenzo.4H.SavaRecord
+# SavaRecord
 
 ## Funzioni del progetto
 
